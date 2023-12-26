@@ -1,0 +1,13 @@
+# docker build -f Dockerfile.react.dev -t react-dev .
+# docker run -d -it --rm -p 3000:3000 --name react-dev -v $PWD:/app react-dev
+
+FROM node:latest AS development
+
+# Declaring env
+ENV NODE_ENV development
+
+# Setting up the work directory
+WORKDIR /app
+
+# Starting our application
+CMD npm start

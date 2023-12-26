@@ -1,0 +1,11 @@
+# docker build -t gimp -f Dockerfile.gimp .
+# xhost +
+# tempc -x -s gimp
+
+FROM ubuntu
+
+RUN apt update
+
+RUN apt install -y gimp
+
+ENTRYPOINT gimp

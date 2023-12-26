@@ -1,0 +1,13 @@
+# docker build -f Dockerfile.next.dev -t next-dev .
+# docker run -d -it --rm -p 3000:3000 --name next-dev -v $PWD:/app next-dev
+
+FROM node:latest AS development
+
+# Declaring env
+ENV NODE_ENV development
+
+# Setting up the work directory
+WORKDIR /app
+
+# Starting our application
+CMD npm run dev

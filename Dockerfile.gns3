@@ -1,0 +1,44 @@
+# NOT WORKING
+
+# docker build -t gns3 -f Dockerfile.gns3 .
+# tempc -x -s gns3
+
+FROM ubuntu
+
+RUN apt update     
+RUN apt-get update     
+
+RUN apt install -y software-properties-common                       
+RUN add-apt-repository ppa:gns3/ppa
+RUN apt install -y gns3-gui gns3-server
+
+RUN dpkg --add-architecture i386
+RUN apt update
+RUN apt install -y gns3-iou
+
+
+RUN apt-get install -y apt-transport-https ca-certificates
+
+RUN apt install -y curl
+
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+
+RUN add-apt-repository \
+"deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) stable"
+
+RUN apt update
+RUN apt install -y docker-ce
+
+RUN usermod -aG ubridge,libvirt,kvm,docker $(whoami)
+
+RUN apt install -y git build-essential
+RUN apt-get install -y libpcap-dev
+RUN cd /
+RUN git clone https://github.com/GNS3/ubridge.git
+RUN cd ubridge && make && make install
+
+RUN chmod 777 /usr/bin/ubridge
+RUN chmod 777 /usr/local/bin/ubridge
+
+ENTRYPOINT gns3server
